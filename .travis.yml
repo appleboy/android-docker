@@ -2,6 +2,9 @@ sudo: required
 
 language: java
 
+services:
+  - docker
+
 env:
   global:
     - DOCKER_CACHE_FILE=${HOME}/docker/cache.tar.gz
@@ -19,4 +22,3 @@ script:
     mkdir -p $(dirname ${DOCKER_CACHE_FILE});
     docker save $(docker history -q $TRAVIS_REPO_SLUG:latest | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE};
     fi
-

@@ -33,16 +33,6 @@ ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 RUN which android
 
-# Create emulator
-RUN echo "no" | android create avd \
-  --force \
-  --device "Nexus 5" \
-  --name test \
-  --target android-24 \
-  --abi armeabi-v7a \
-  --skin WVGA800 \
-  --sdcard 512M
-
 # Cleaning
 RUN apt-get clean
 

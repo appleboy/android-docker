@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/appleboy/android-docker.svg?branch=master)](https://travis-ci.org/appleboy/android-docker)
 
-Android Docker image
+Android Docker image forks from [appunite/docker](https://github.com/appunite/docker) repo
 
 ## Build image
 

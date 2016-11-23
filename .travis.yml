@@ -22,3 +22,10 @@ script:
     mkdir -p $(dirname ${DOCKER_CACHE_FILE});
     docker save $(docker history -q $TRAVIS_REPO_SLUG:latest | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE};
     fi
+
+after_success:
+  # deploy from master
+  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    make docker_deploy tag=latest;
+    fi

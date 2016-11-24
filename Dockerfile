@@ -8,12 +8,12 @@ RUN apt-get update && \
   add-apt-repository -y ppa:webupd8team/java && \
   (echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections) && \
   apt-get update && \
-  apt-get install -y oracle-java8-installer && \
-  apt-get clean && \
-  rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  apt-get install -y oracle-java8-installer
 
 # Install Deps
-RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force-yes expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl libqt5widgets5 && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN dpkg --add-architecture i386 && \
+  apt-get update && \
+  apt-get install -y expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl libqt5widgets5
 
 # Copy install tools
 COPY tools /opt/tools
@@ -34,7 +34,8 @@ ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 RUN which android
 
 # Cleaning
-RUN apt-get clean
+RUN apt-get clean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # GO to workspace
 RUN mkdir -p /opt/workspace

@@ -19,12 +19,12 @@ before_install:
 script:
   - make build
   # add docker cache
-  - travis_wait if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    echo -n "Start Docker cache";
-    mkdir -p $(dirname ${DOCKER_CACHE_FILE});
-    docker save $(docker history -q $TRAVIS_REPO_SLUG:latest | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE};
-    echo -n "End Docker cache";
-    fi
+  # - travis_wait if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+  #   echo -n "Start Docker cache";
+  #   mkdir -p $(dirname ${DOCKER_CACHE_FILE});
+  #   docker save $(docker history -q $TRAVIS_REPO_SLUG:latest | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE};
+  #   echo -n "End Docker cache";
+  #   fi
 
 after_success:
   # deploy to docker hub

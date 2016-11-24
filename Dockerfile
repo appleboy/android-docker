@@ -1,6 +1,6 @@
 FROM ubuntu:14.04
 
-MAINTAINER Jacek Marchwicki "jacek.marchwicki@gmail.com"
+MAINTAINER Bo-Yi Wu "appleboy.tw@gmail.com"
 
 # Install java8
 RUN apt-get update && \

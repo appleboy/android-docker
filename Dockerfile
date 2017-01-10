@@ -3,9 +3,9 @@ FROM ubuntu:14.04
 MAINTAINER Bo-Yi Wu "appleboy.tw@gmail.com"
 
 # Define dependencies
-ENV ANDROID_SDK_URL="https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz" \ 
+ENV ANDROID_SDK_URL="https://dl.google.com/android/repository/tools_r25.2.4-linux.zip" \ 
     ANDROID_SDK_PLATFORMS="android-21,android-22,android-23,android-24,android-25" \
-    ANDROID_BUILD_TOOLS="build-tools-22.0.1,build-tools-24.0.0,build-tools-24.0.1,build-tools-24.0.2,build-tools-24.0.3,build-tools-25.0.0" \ 
+    ANDROID_BUILD_TOOLS="build-tools-22.0.1,build-tools-24.0.0,build-tools-24.0.1,build-tools-24.0.2,build-tools-24.0.3,build-tools-25.0.0,build-tools-25.0.1,build-tools-25.0.2" \ 
     ANDROID_EXTRAS="addon-google_apis_x86-google-21,extra-android-support,extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services" \ 
     ANDROID_IMAGES="sys-img-armeabi-v7a-android-24"
 
@@ -23,32 +23,26 @@ RUN apt-get update && \
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force-yes expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl libqt5widgets5 && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy install tools
-COPY tools /opt/tools
-ENV PATH ${PATH}:/opt/tools
+COPY tools /opt/sh-tools
+ENV PATH ${PATH}:/opt/sh-tools
+
+ENV ANDROID_HOME /opt/android-sdk-linux
+
+RUN apt-get update && apt-get install unzip
 
 # Install Android SDK
-RUN cd /opt && wget --output-document=android-sdk.tgz --quiet ${ANDROID_SDK_URL} && \
-  tar xzf android-sdk.tgz && \
-  rm -f android-sdk.tgz && \
+RUN cd /opt && wget -q ${ANDROID_SDK_URL} -O android-sdk-tools.zip && \
+  unzip -q android-sdk-tools.zip && \
+  rm -f android-sdk-tools.zip && \
+  mkdir ${ANDROID_HOME} && \
+  mv /opt/tools/ ${ANDROID_HOME}/ && \
   chown -R root.root android-sdk-linux && \
-  /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools,${ANDROID_SDK_PLATFORMS},${ANDROID_BUILD_TOOLS},${ANDROID_EXTRAS},${ANDROID_IMAGES}"
+  /opt/sh-tools/android-accept-licenses.sh "${ANDROID_HOME}/tools/android update sdk --all --no-ui --filter platform-tools,tools,${ANDROID_SDK_PLATFORMS},${ANDROID_BUILD_TOOLS},${ANDROID_EXTRAS},${ANDROID_IMAGES}"
 
 # Setup environment
-ENV ANDROID_HOME /opt/android-sdk-linux
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+ENV PATH ${PATH}:${ANDROID_HOME}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
-RUN which adb
 RUN which android
-
-# Create emulator
-RUN echo "no" | android create avd \
-  --force \
-  --device "Nexus 5" \
-  --name test \
-  --target android-24 \
-  --abi armeabi-v7a \
-  --skin WVGA800 \
-  --sdcard 512M
 
 # Cleaning
 RUN apt-get clean && \

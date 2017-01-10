@@ -2,6 +2,8 @@ FROM ubuntu:14.04
 
 MAINTAINER Bo-Yi Wu "appleboy.tw@gmail.com"
 
+# SDK Tools revisions: https://developer.android.com/studio/releases/sdk-tools.html
+# SDK Build Tools revisions: https://developer.android.com/studio/releases/build-tools.html
 # Define dependencies
 ENV ANDROID_SDK_URL="https://dl.google.com/android/repository/tools_r25.2.4-linux.zip" \ 
     ANDROID_SDK_PLATFORMS="android-21,android-22,android-23,android-24,android-25" \
@@ -41,6 +43,14 @@ RUN cd /opt && wget -q ${ANDROID_SDK_URL} -O android-sdk-tools.zip && \
 
 # Setup environment
 ENV PATH ${PATH}:${ANDROID_HOME}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
+# accept the license agreements of the SDK components
+RUN export ANDROID_LICENSES="$ANDROID_HOME/licenses" && \
+    [ -d $ANDROID_LICENSES ] || mkdir $ANDROID_LICENSES && \
+    [ -f $ANDROID_LICENSES/android-sdk-license ] || echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > $ANDROID_LICENSES/android-sdk-license && \
+    [ -f $ANDROID_LICENSES/android-sdk-preview-license ] || echo 84831b9409646a918e30573bab4c9c91346d8abd > $ANDROID_LICENSES/android-sdk-preview-license && \
+    [ -f $ANDROID_LICENSES/intel-android-extra-license ] || echo d975f751698a77b662f1254ddbeed3901e976f5a > $ANDROID_LICENSES/intel-android-extra-license && \
+    unset ANDROID_LICENSES
 
 RUN which android
 

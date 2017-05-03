@@ -7,7 +7,7 @@ MAINTAINER Bo-Yi Wu "appleboy.tw@gmail.com"
 # Define dependencies
 ENV ANDROID_SDK_URL="https://dl.google.com/android/repository/tools_r25.2.4-linux.zip" \ 
     ANDROID_SDK_PLATFORMS="android-21,android-22,android-23,android-24,android-25" \
-    ANDROID_BUILD_TOOLS="build-tools-22.0.1,build-tools-24.0.0,build-tools-24.0.1,build-tools-24.0.2,build-tools-24.0.3,build-tools-25.0.0,build-tools-25.0.1,build-tools-25.0.2" \ 
+    ANDROID_BUILD_TOOLS="build-tools-22.0.1,build-tools-24.0.0,build-tools-24.0.1,build-tools-24.0.2,build-tools-24.0.3,build-tools-25.0.0,build-tools-25.0.1,build-tools-25.0.2,build-tools-25.3.1" \ 
     ANDROID_EXTRAS="addon-google_apis_x86-google-21,extra-android-support,extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services" \ 
     ANDROID_IMAGES="sys-img-armeabi-v7a-android-24"
 
